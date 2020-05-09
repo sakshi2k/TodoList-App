@@ -1,0 +1,28 @@
+<%- include("header") -%>
+
+<body>
+    <div class="box" id="heading">
+        <h2><%= listHeading %>!</h2>
+    </div>
+
+    <div class="box">
+        <% newListItems.forEach(function(data){ %>
+        <form action="/delete" method="POST">
+            <div class="item">
+                <input type="checkbox"/>
+                <p class="listItem"><%= data.name %></p>
+                <button id="remove" name="crossout"
+                    value="<%= data._id %>" >X</button>
+                <input type="hidden" name="listHeading" value="<%= listHeading %>"/>
+            </div>
+        </form>
+        <% }) %>
+    
+        <form action="/" method="POST">
+            <input type="text" name="newItem" placeholder="New chore" required autocomplete="off"/>
+            <button name="listHeading" id="add" value= "<%= listHeading %>">+</button>
+        </form>    
+    </div>
+
+</body>
+</html>
