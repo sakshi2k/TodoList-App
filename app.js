@@ -10,12 +10,13 @@ const app = express();
 
 let defaultItems = [{name : "Keep smiling"}];
 
-const DBpassword = process.env.DB_Password;
+const DB_Password = process.env.DB_Password;
+const DB_Username = process.env.DB_Username;
 app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static("public"));
-mongoose.connect("mongodb+srv://admin-Sakshi2k:"+DBpassword+"@cluster0-2xnk3.gcp.mongodb.net/todoListDB", {useNewUrlParser: true, useUnifiedTopology: true} );
+mongoose.connect("mongodb+srv://admin-"+DB_Username+":"+DB_Password+"@cluster0-2xnk3.gcp.mongodb.net/todoListDB", {useNewUrlParser: true, useUnifiedTopology: true} );
 mongoose.set('useFindAndModify', false)
 
             /************************* Mongoose *****************************/                                               
@@ -33,7 +34,7 @@ const listSchema = {
 const List = mongoose.model("List", listSchema);
 
             /************************* ROUTES *****************************/                                               
-
+// List of the home route
 app.get("/", (req, res) => {
     let day = date.getDate();
 
@@ -42,6 +43,7 @@ app.get("/", (req, res) => {
     });
 });
 
+// List to the custom route
 app.get("/:customListName", (req, res) => {
     const customListName = req.params.customListName;
 
@@ -61,29 +63,7 @@ app.get("/:customListName", (req, res) => {
     })       
 })
 
-
-// app.get("/:UserListChoice", function(req, res) {
-//     const UserListChoice = req.params.UserListChoice.toLowerCase();
-
-//     const myURL = new URL('http://localhost:3000/');
-//     myURL.href = 'http://localhost:3000/'+UserListChoice;
-
-//         List.findOne({name : UserListChoice}, function(err,foundItem){
-//             if(!err){
-//                 if(!foundItem){
-//                     const list = new List({
-//                         name: UserListChoice ,
-//                         listItems : defaultItems
-//                     }); 
-//                     list.save(); 
-//                     res.redirect("/" + UserListChoice);
-//                 } else {
-//                     res.render('list', {listHeading : foundItem.name, newListItems : foundItem.listItems})
-//                 }
-//             }
-//         })  
-// })
-
+// Adding items to list.
 app.post("/", (req, res) =>{
     let item = req.body.newItem;
     let listHeading = req.body.listHeading;
@@ -111,6 +91,7 @@ app.post("/", (req, res) =>{
     }
 });
 
+// Deleting items from list
 app.post("/delete", (req, res) => {
     let day = date.getDate();
     let listHeading = req.body.listHeading;
@@ -137,9 +118,9 @@ app.post("/delete", (req, res) => {
     }
 });
 
+// To change List
 app.post("/changeList", function(req, res) {
     const listName = req.body.listName;
-    console.log(listName);
     res.redirect("/"+listName);
 })
 
