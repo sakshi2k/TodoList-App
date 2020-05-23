@@ -4,15 +4,18 @@ const mongoose = require("mongoose");
 const url = require('url');
 const date = require(__dirname + "/date.js");
 
+require('dotenv').config()
+
 const app = express();
 
 let defaultItems = [{name : "Keep smiling"}];
 
+const DBpassword = process.env.DB_Password;
 app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static("public"));
-mongoose.connect("mongodb://localhost:27017/todoListDB", {useNewUrlParser: true, useUnifiedTopology: true} );
+mongoose.connect("mongodb+srv://admin-Sakshi2k:"+DBpassword+"@cluster0-2xnk3.gcp.mongodb.net/todoListDB", {useNewUrlParser: true, useUnifiedTopology: true} );
 mongoose.set('useFindAndModify', false)
 
             /************************* Mongoose *****************************/                                               
@@ -39,28 +42,47 @@ app.get("/", (req, res) => {
     });
 });
 
+app.get("/:customListName", (req, res) => {
+    const customListName = req.params.customListName;
 
-app.get("/:UserListChoice", function(req, res) {
-    const UserListChoice = req.params.UserListChoice.toLowerCase();
-
-    const myURL = new URL('http://localhost:3000/');
-    myURL.href = 'http://localhost:3000/'+UserListChoice;
-
-        List.findOne({name : UserListChoice}, function(err,foundItem){
-            if(!err){
-                if(!foundItem){
-                    const list = new List({
-                        name: UserListChoice ,
-                        listItems : defaultItems
-                    }); 
-                    list.save(); 
-                    res.redirect("/" + UserListChoice);
-                } else {
-                    res.render('list', {listHeading : foundItem.name, newListItems : foundItem.listItems})
-                }
+    List.findOne({name : customListName}, function(err,foundItem){
+        if(!err){
+            if(!foundItem){
+                const list = new List({
+                    name: customListName,
+                    listItems : defaultItems
+                }); 
+                list.save(); 
+                res.redirect("/" + customListName);
+            } else {
+                res.render('list', {listHeading : foundItem.name, newListItems : foundItem.listItems})
             }
-        })  
+        }
+    })       
 })
+
+
+// app.get("/:UserListChoice", function(req, res) {
+//     const UserListChoice = req.params.UserListChoice.toLowerCase();
+
+//     const myURL = new URL('http://localhost:3000/');
+//     myURL.href = 'http://localhost:3000/'+UserListChoice;
+
+//         List.findOne({name : UserListChoice}, function(err,foundItem){
+//             if(!err){
+//                 if(!foundItem){
+//                     const list = new List({
+//                         name: UserListChoice ,
+//                         listItems : defaultItems
+//                     }); 
+//                     list.save(); 
+//                     res.redirect("/" + UserListChoice);
+//                 } else {
+//                     res.render('list', {listHeading : foundItem.name, newListItems : foundItem.listItems})
+//                 }
+//             }
+//         })  
+// })
 
 app.post("/", (req, res) =>{
     let item = req.body.newItem;
@@ -91,7 +113,7 @@ app.post("/", (req, res) =>{
 
 app.post("/delete", (req, res) => {
     let day = date.getDate();
-    let listHeading = req.body.listHeading.toLowerCase();
+    let listHeading = req.body.listHeading;
     let toDeleteItemById = req.body.crossout;
     
     if(listHeading === "Hey, it's "+day){
@@ -108,16 +130,19 @@ app.post("/delete", (req, res) => {
         List.findOneAndUpdate({name: listHeading}, {$pull: {listItems : {_id : toDeleteItemById} } } ,
              function(err, foundItem) {
                     if(!err){
-                        res.redirect("/" + listHeading);
+                        res.redirect("/" + listHeading.toLowerCase());
                     }
         });
         
     }
 });
 
+app.post("/changeList", function(req, res) {
+    const listName = req.body.listName;
+    console.log(listName);
+    res.redirect("/"+listName);
+})
 
 app.listen(3000, () => {
     console.log("Port started at 3000");
 });
-
-//

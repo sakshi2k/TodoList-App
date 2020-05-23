@@ -5,7 +5,9 @@
         <h2><%= listHeading %> !</h2>
     </div>
 
+    
     <div class="box">
+        <!-- Shows Todo list -->
         <% newListItems.forEach(function(data){ %>
         <form action="/delete" method="POST">
             <div class="item">
@@ -19,17 +21,22 @@
         </form>
         <% }) %>
     
+        <!-- To enter a new chore to present list -->
         <form action="/" method="POST">
-            <input type="text" name="newItem" placeholder="New chore" required autocomplete="off"/>
+            <input type="text" id="choreInput" name="newItem" placeholder="New chore" required autocomplete="off"/>
             <button name="listHeading" id="add" value= "<%= listHeading %>">+</button>
-        </form>  
-        
-        <!--  
-        <form action="/" method="POST">
-            <input type="text" name="newList" value= "<%=  %>" placeholder="Check other list" autocomplete="off"/>
-        </form> 
-        -->
+        </form>          
     </div>
 
+    <br/><br/>
+    <!-- To Open another list -->  
+  <form action="/changeList" method="POST" style="margin-top: 20px;">
+        Want to checkout to another list ?<br/>
+        <input type="text" id="listNameInput" name="listName" placeholder="List Name" required/>
+        <button style="background-color: transparent; ">
+            <i class="fas fa-arrow-right"></i>
+        </button>
+        
+    </form>  
 </body>
 </html>
