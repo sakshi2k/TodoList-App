@@ -12,10 +12,14 @@ let defaultItems = [{name : "Keep smiling"}];
 
 const DB_Password = process.env.DB_Password;
 const DB_Username = process.env.DB_Username;
+
+// Setting express engine
 app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static("public"));
+
+//Connecting to the database
 mongoose.connect("mongodb+srv://admin-"+DB_Username+":"+DB_Password+"@cluster0-2xnk3.gcp.mongodb.net/todoListDB", {useNewUrlParser: true, useUnifiedTopology: true} );
 mongoose.set('useFindAndModify', false)
 
@@ -34,6 +38,7 @@ const listSchema = {
 const List = mongoose.model("List", listSchema);
 
             /************************* ROUTES *****************************/                                               
+
 // List of the home route
 app.get("/", (req, res) => {
     let day = date.getDate();
@@ -113,8 +118,7 @@ app.post("/delete", (req, res) => {
                     if(!err){
                         res.redirect("/" + listHeading.toLowerCase());
                     }
-        });
-        
+        }); 
     }
 });
 
