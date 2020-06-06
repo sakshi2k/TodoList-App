@@ -128,6 +128,6 @@ app.post("/changeList", function(req, res) {
     res.redirect("/"+listName);
 })
 
-app.listen(3000, () => {
-    console.log("Port started at 3000");
+app.listen(process.env.PORT || 3000, () => {
+    console.log("Application started on port");
 });
