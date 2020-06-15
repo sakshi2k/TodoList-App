@@ -1,6 +1,6 @@
 html {
-  background-color: #ccf5e7b0;
-  /* background-image: -webkit-linear-gradient(to bottom, 65deg, #2d8366 50%, #E4E9FD 50%); */
+  background-color: #c0c2c1b0;
+  background-image: -webkit-linear-gradient(to bottom, 65deg, #2d8366 50%, #E4E9FD 50%);
   font-family: 'helvetica neue';
 }
 
@@ -13,7 +13,8 @@ h2 {
 h3, a{
   text-align: right;
   text-decoration: none; 
-  margin-right: 20px; 
+  margin-right: 20px;
+  color: #033475; 
 }
 
 .box {
@@ -132,6 +133,13 @@ input[type="text"]:focus {
 ::placeholder {
   color: grey;
   opacity: 1;
+}
+
+#anotherListInput {
+  font-family: 'Times New Roman';
+  font-size: 18px;
+  color: rgb(83, 83, 83);
+  margin-bottom: -10px;
 }
 
 footer {

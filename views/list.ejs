@@ -1,12 +1,12 @@
 <%- include("header") -%>
 
 <body>
-    <div class="box" id="heading">
+    <div class="box" id="heading" style="margin-bottom: -10pt;">
         <h2><%= listHeading %> !</h2>
     </div>
 
     
-    <div class="box">
+    <div class="box" style="margin-bottom: -20pt;">
         <!-- Shows Todo list -->
         <% newListItems.forEach(function(data){ %>
         <form action="/delete" method="POST">
@@ -30,8 +30,8 @@
 
     <br/><br/>
     <!-- To Open another list -->  
-  <form action="/changeList" method="POST" style="margin-top: 20px;">
-        Want to checkout to another list ?<br/>
+  <form action="/changeList" method="POST">
+        <h1 id="anotherListInput">WANT TO CHECKOUT ANOTHER LIST ?</h1><br/>
         <input type="text" id="listNameInput" name="listName" placeholder="List Name" required/>
         <button style="background-color: transparent; ">
             <i class="fas fa-arrow-right"></i>
